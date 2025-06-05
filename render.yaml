@@ -3,8 +3,5 @@ services:
     name: laravel-app
     env: docker
     plan: free
-    region: oregon
-    branch: main
-    dockerfilePath: Dockerfile
-    healthCheckPath: /
-    autoDeploy: true
+    ports:
+      - 8080
