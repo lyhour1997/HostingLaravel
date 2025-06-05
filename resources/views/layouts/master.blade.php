@@ -19,6 +19,7 @@
     <title>Layouts</title>
 </head>
 <body>
+
     
     <nav class="container navbar navbar-expand-lg bg-primary">
         <div class="container py-3">
@@ -45,3 +46,4 @@
     
 </body>
 </html>
+
