@@ -1,26 +1,31 @@
-FROM php:8.2
+FROM php:8.1-fpm
 
-# Install extensions
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libpq-dev unzip curl git zip \
-    && docker-php-ext-install pdo pdo_pgsql
+    git \
+    curl \
+    zip \
+    unzip \
+    libzip-dev \
+    libonig-dev \
+    libxml2-dev \
+    sqlite3 \
+    libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_sqlite mbstring zip exif pcntl bcmath
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+# Set working directory
+WORKDIR /var/www
+
+# Copy application code
 COPY . .
 
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
-RUN php artisan config:clear
-RUN php artisan route:clear
-RUN php artisan view:clear
 
 # Laravel permissions
-RUN chmod -R 775 storage bootstrap/cache
+RUN chmod -R 755 /var/www/storage
 
-# Expose port
-EXPOSE 8080
-
-# Start Laravel via PHP's built-in web server
-CMD php artisan migrate --force && php -S 0.0.0.0:8080 -t public
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
