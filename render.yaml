@@ -1,16 +1,15 @@
 services:
   - type: web
-    name: laravel-app
+    name: laravel-sqlite-app
     env: docker
+    region: oregon
     plan: free
     dockerfilePath: ./Dockerfile
-    buildCommand: ""
-    startCommand: ""
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        value: base64:your-key
+        value: base64:YOUR_KEY_HERE
       - key: DB_CONNECTION
         value: sqlite
       - key: DB_DATABASE
